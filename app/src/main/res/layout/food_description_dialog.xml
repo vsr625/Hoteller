@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="15dp"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is declicious and grand, I love it"
+        android:id="@+id/dishDescription"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textAlignment="center"
+        android:layout_marginBottom="15dp"
+        />
+    <com.shawnlin.numberpicker.NumberPicker
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:np_dividerColor="@color/colorPrimary"
+        android:layout_below="@id/dishDescription"
+        app:np_min="1"
+        app:np_max="99"
+        app:np_dividerDistance="90dp"
+        app:np_orientation="horizontal"
+        app:np_value="1"
+        app:np_order="ascending"
+        android:id="@+id/dishCount"
+        app:np_textColor="@color/btnDisabled"
+        app:np_wheelItemCount="3"
+        app:np_selectedTextColor="@color/colorPrimaryDark"
+        android:orientation="horizontal"
+
+        />
+
+</RelativeLayout>

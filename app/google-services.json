@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "583294883145",
+    "firebase_url": "https://hoteller-6a17b.firebaseio.com",
+    "project_id": "hoteller-6a17b",
+    "storage_bucket": "hoteller-6a17b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583294883145:android:7c23121c3e9c5979",
+        "android_client_info": {
+          "package_name": "com.teamnamenotfoundexception.hoteller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583294883145-8gocg3jljje663uhhtf6ci3lqnmcg4n5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teamnamenotfoundexception.hoteller",
+            "certificate_hash": "6a4c22d7fbe6d5203fd0e7abc96d14b789634a8e"
+          }
+        },
+        {
+          "client_id": "583294883145-qairikqnebqafl40qr86slg7dlvib09r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyQv1O4fAbgC7z-yeMnaAteFgezqTXBso"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583294883145-qairikqnebqafl40qr86slg7dlvib09r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

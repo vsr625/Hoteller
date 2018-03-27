@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.teamnamenotfoundexception.hoteller.Activities.CartActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:id="@+id/cartTools"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/white"
+        app:title="My Cart" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/empty"
+
+        android:layout_below="@id/cartTools"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dummy"
+            android:src="@drawable/empty_cart_image"
+            android:layout_centerInParent="true"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dummy"
+            android:textAlignment="center"
+            android:layout_marginTop="30dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="Looks so empty, shop now!"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nempty"
+        android:visibility="visible"
+        android:layout_below="@id/cartTools">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cartRecycle"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/checkoutBtn"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkoutBtn"
+        android:onClick="checkout"
+        android:text="Checkout!"
+        android:layout_alignParentBottom="true"
+        style="@style/btnStyle"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

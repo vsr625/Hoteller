@@ -1,0 +1,67 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="btnStyle" parent="AppTheme">
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="textStyle" parent="AppTheme">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
+
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="love">
+        <item name="textBold">true</item>
+        <item name="textColor">@color/white</item>
+        <item name="textFont">?android:font</item>
+        <item name="textSize">14sp</item>
+        <item name="colorBackground">#fff</item>
+        <item name="solidBackground">true</item>
+        <item name="strokeWidth">3dp</item>
+        <item name="iconLeft">@drawable/ic_favorite_black_24dp</item>
+        <item name="length">LONG</item>
+        <item name="cornerRadius">5dp</item>
+    </style>
+
+    <style name="love_add" parent="love">
+        <item name="colorBackground">#088ec2</item>
+    </style>
+
+    <style name="love_rm" parent="love">
+        <item name="colorBackground">#ec1212</item>
+    </style>
+
+    <style name="cart">
+        <item name="textBold">true</item>
+        <item name="textColor">@color/white</item>
+        <item name="textFont">?android:font</item>
+        <item name="textSize">14sp</item>
+        <item name="android:colorBackground">#fff</item>
+        <item name="solidBackground">true</item>
+        <item name="strokeWidth">3dp</item>
+        <item name="iconLeft">@drawable/ic_shopping_cart_black_24dp</item>
+        <item name="length">LONG</item>
+        <item name="cornerRadius">5dp</item>
+    </style>
+
+    <style name="cart_add" parent="cart">
+        <item name="colorBackground">#088ec2</item>
+    </style>
+
+    <style name="cart_rm" parent="cart">
+        <item name="colorBackground">#ec1212</item>
+    </style>
+</resources>
