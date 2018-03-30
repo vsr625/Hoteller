@@ -2,8 +2,6 @@ package com.teamnamenotfoundexception.hoteller.Database;
 
 import android.util.Log;
 
-import java.io.Serializable;
-
 
 public class DishItem{
 
@@ -18,7 +16,7 @@ public class DishItem{
     public int isFav;
     public int isCart;
     public String mTags;
-
+    public String mRest;
 
     public DishItem() {
         this.mQuantity = 1;
@@ -37,10 +35,10 @@ public class DishItem{
         this.mQuantity = dishItem.getQuantity();
         this.mTotalPrice = dishItem.getTotalPrice();
         this.mTags = "";
+        this.mRest = "";
     }
 
-    public DishItem(int dishId, String dishName, String dishType, int price, String description, String imagePath, String tags) {
-
+    public DishItem(int dishId, String dishName, String dishType, int price, String description, String imagePath, String tags, String rest) {
         this.mDishId = dishId;
         this.mDishName = dishName;
         this.mDishType = dishType;
@@ -50,6 +48,7 @@ public class DishItem{
         this.isFav = 0;
         this.isCart = 0;
         this.mTags = tags;
+        this.mRest = rest;
     }
 
     public void setTags(String tags) {

@@ -64,7 +64,7 @@ public class CartManager {
     public void addToFavorites(DishItem item) {
         try {
             CartManager.get(mAppContext).getFavoriteIdList().add(item.getDishId());
-            mFirebaseHelper.updateFavoriteList(mFavoriteList, mUser);
+          //  mFirebaseHelper.updateFavoriteList(mFavoriteList, mUser);
         } catch (Exception e) {
             Log.i("CartManager Exception:", "cannot update favorite list");
         }
@@ -73,7 +73,7 @@ public class CartManager {
     public void removeFromFavorites(DishItem item) {
         try {
             CartManager.get(mAppContext).getFavoriteIdList().remove(Integer.valueOf(item.getDishId()));
-            mFirebaseHelper.updateFavoriteList(mFavoriteList, mUser);
+          //  mFirebaseHelper.updateFavoriteList(mFavoriteList, mUser);
         } catch (Exception e) {
             Log.i("CartManager Exception:", "cannto update after removing");
         }

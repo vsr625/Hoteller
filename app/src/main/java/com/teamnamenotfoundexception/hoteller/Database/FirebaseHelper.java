@@ -38,32 +38,29 @@ public class FirebaseHelper {
         if(firebaseDatabase != null)
             mDatabaseReference = mFirebaseDatabase.getReference("CustomerData/" );
     }
-
-    public void placeOrder(ArrayList<DishItem> itemsInCart, FirebaseUser user) {
-        Log.i("order", "placeOrder called");
-        OrderObject orderObject= new OrderObject(itemsInCart);
-        String emailId = getEmailStripped(user.getEmail());
-
-        try {
-            mDatabaseReference.child(user.getUid()).child(emailId).child("orders").push().setValue(orderObject);
-        } catch(Exception e) {
-            Log.i("orderError", "error in placing the order");
-        }
-
-    }
-
     public void updateFavoriteList(ArrayList favoriteListItem, FirebaseUser user) {
-
-        Log.i("favorite", "update favorite caleld");
         String emailId = getEmailStripped(user.getEmail());
         Map<String, ArrayList<Integer> > favoriteListMap = new HashMap<>();
         favoriteListMap.put("item_ids", favoriteListItem);
         try {
             mDatabaseReference.child(user.getUid()).child(emailId).child("favorites").setValue(favoriteListMap);
         } catch(Exception e) {
-            Log.i("favoriteError", "error in placing the order");
+
         }
     }
+
+    public ArrayList<Restaurant> fetchNearByRestaurants(double lat, double log){
+        ArrayList<Restaurant> res = new ArrayList<>();
+
+        return res;
+    }
+
+    public ArrayList<DishItem> fetchItems(String restId){
+        ArrayList<DishItem> res = new ArrayList<>();
+
+        return res;
+    }
+
 
     public String getEmailStripped(String emailId) {
         String emailIdSplit[] = emailId.split("@");
@@ -88,7 +85,7 @@ public class FirebaseHelper {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+
             }
         });
     }

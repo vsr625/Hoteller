@@ -1,5 +1,6 @@
 package com.teamnamenotfoundexception.hoteller.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,9 +24,12 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.teamnamenotfoundexception.hoteller.Adapters.RestaurantAdapter;
 import com.teamnamenotfoundexception.hoteller.Database.CartManager;
 import com.teamnamenotfoundexception.hoteller.Database.DishItem;
 import com.teamnamenotfoundexception.hoteller.Database.DishRepository;
+import com.teamnamenotfoundexception.hoteller.Database.Restaurant;
+import com.teamnamenotfoundexception.hoteller.Database.RestaurantRepository;
 import com.teamnamenotfoundexception.hoteller.Database.UpdateNotificationCount;
 import com.teamnamenotfoundexception.hoteller.Login.LoginActivity;
 import com.teamnamenotfoundexception.hoteller.R;
@@ -37,12 +42,19 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, UpdateNotificationCount {
 
     private static ArrayList<DishItem> dishItems;
+    private static ArrayList<Restaurant> restItems;
     private static CartManager mCartManager;
     private FirebaseAuth mAuth;
-    private static CustomAdapter mCustomAdapter;
+    private static CustomAdapter mCustomAdapter = null;
+    private static RestaurantAdapter mRestAdapter;
     private static DishRepository mDishRepository;
+    private static RestaurantRepository mRestRepository;
     private TextView notifyCount;
     private DrawerLayout drawer;
+    private static ProgressBar progressBar;
+    public static RecyclerView recyclerView;
+    public static LinearLayoutManager linearLayoutManager;
+    private static Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,35 +82,39 @@ public class MainActivity extends AppCompatActivity
         mCartManager.setAuth(FirebaseAuth.getInstance());
         mCartManager.setUser(FirebaseAuth.getInstance().getCurrentUser());
         mCartManager.setFirebaseDatabase(FirebaseDatabase.getInstance());
-        mCartManager.initializeFavoriteList();
-
-        mDishRepository = DishRepository.get(getApplicationContext());
-        mDishRepository.insertAllDishItems();
-        mDishRepository.initializeDishItemsList();
-
-        // Draw Activity
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        drawer = findViewById(R.id.drawer_layout);
 
         // Set listener for UpdateNotifyCount
         mCartManager.setListenerInterface(this);
-        // Get dishItems to display
-        dishItems = new ArrayList<>(mDishRepository.getDishItemsList());
+
+        // Initialize Restaurant Repository with NearBy restaurants
+        mRestRepository = RestaurantRepository.get(getApplicationContext());
+        mRestRepository.initializeNearByRestaurants();
+        restItems = new ArrayList<>(mRestRepository.getmRestList());
+
+        // Removing this, because we can't store favorites from multiple restaurants
+        //mCartManager.initializeFavoriteList();
+
+        mDishRepository = DishRepository.get(getApplicationContext());
+
+        // Draw Activity
+        setContentView(R.layout.activity_main);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
 
         // The recycler view
-        RecyclerView recyclerView = findViewById(R.id.recycle);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getApplicationContext());
+        recyclerView = findViewById(R.id.recycle);
+        linearLayoutManager = new LinearLayoutManager(this.getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         // Animator for the dishItem list
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         // Display the Items
-        mCustomAdapter = new CustomAdapter(MainActivity.this, dishItems);
-        recyclerView.setAdapter(mCustomAdapter);
+        mRestAdapter = new RestaurantAdapter(MainActivity.this, restItems);
+        recyclerView.setAdapter(mRestAdapter);
 
         // Hide the progress bar
-        ProgressBar progressBar = findViewById(R.id.progressCircle);
+        progressBar = findViewById(R.id.progressCircle);
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
 
@@ -111,6 +127,19 @@ public class MainActivity extends AppCompatActivity
         // Action Bar stuff
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    // Display Items from a particular Restaurant
+    public static void displayItems(String RestId, Context context) {
+        toolbar.setTitle("List of Items");
+        recyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        mDishRepository.initializeDishItemsList(RestId);
+        dishItems = mDishRepository.getDishItemsList();
+        mCustomAdapter = new CustomAdapter(context, dishItems);
+        recyclerView.setAdapter(mCustomAdapter);
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     // Update the CustomAdapter for new changes
@@ -165,7 +194,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mCustomAdapter.setData(mDishRepository.getDishItemsList());
+        if(mCustomAdapter != null)
+            mCustomAdapter.setData(dishItems);
+        else
+            mRestAdapter.setData(restItems);
     }
 
     // For handling Events from Navigational Drawer
@@ -184,7 +216,7 @@ public class MainActivity extends AppCompatActivity
                     mAuth.signOut();
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Trouble logging you out. Check your connection!", Toast.LENGTH_SHORT).show();
-                }finally {
+                } finally {
                     mCartManager.setAuth(null);
                     mCartManager.setFirebaseDatabase(null);
                     mCartManager.setUser(null);
@@ -195,6 +227,7 @@ public class MainActivity extends AppCompatActivity
                 finish();
                 break;
         }
+        Log.d("Something Important", "onNavigationItemSelected" + restItems.size());
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -204,7 +237,13 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (mCustomAdapter != null) {
+                toolbar.setTitle("Nearby Restaurants");
+                mRestAdapter = new RestaurantAdapter(MainActivity.this, restItems);
+                recyclerView.setAdapter(mRestAdapter);
+                mCustomAdapter = null;
+            } else
+                super.onBackPressed();
         }
     }
 }
