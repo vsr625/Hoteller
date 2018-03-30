@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // This is for NetworkOnMainThread Exception
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         // First check if the user has completed the tutorial
         SharedPreferences tutorialFlag = getSharedPreferences("tutorialFlag", getApplicationContext().MODE_PRIVATE);
         Boolean state = tutorialFlag.getBoolean("shown", false);
@@ -90,9 +94,6 @@ public class MainActivity extends AppCompatActivity
         mRestRepository = RestaurantRepository.get(getApplicationContext());
         mRestRepository.initializeNearByRestaurants();
         restItems = new ArrayList<>(mRestRepository.getmRestList());
-
-        // Removing this, because we can't store favorites from multiple restaurants
-        //mCartManager.initializeFavoriteList();
 
         mDishRepository = DishRepository.get(getApplicationContext());
 
@@ -146,6 +147,8 @@ public class MainActivity extends AppCompatActivity
     public static void notifyMe() {
         if (mCustomAdapter != null) {
             mCustomAdapter.notifyDataSetChanged();
+        }else{
+            mRestAdapter.notifyDataSetChanged();
         }
     }
 
@@ -191,14 +194,14 @@ public class MainActivity extends AppCompatActivity
         updateCount(CartManager.get(getApplicationContext()).getCartItems().size());
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(mCustomAdapter != null)
-            mCustomAdapter.setData(dishItems);
-        else
-            mRestAdapter.setData(restItems);
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if(mCustomAdapter != null)
+//            mCustomAdapter.setData(dishItems);
+//        else
+//            mRestAdapter.setData(restItems);
+//    }
 
     // For handling Events from Navigational Drawer
     @Override
@@ -227,7 +230,6 @@ public class MainActivity extends AppCompatActivity
                 finish();
                 break;
         }
-        Log.d("Something Important", "onNavigationItemSelected" + restItems.size());
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

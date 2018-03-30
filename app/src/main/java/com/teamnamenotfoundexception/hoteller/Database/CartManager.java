@@ -53,13 +53,13 @@ public class CartManager {
         this.mFavoriteList = arrayList;
     }
 
-    public void initializeFavoriteList() {
-        try {
-            mFirebaseHelper.fetchFavoriteList(mUser);
-        } catch (Exception e) {
-            Log.i("CartManager Exception:", "error fetching favs");
-        }
-    }
+//    public void initializeFavoriteList() {
+//        try {
+//            mFirebaseHelper.fetchFavoriteList(mUser);
+//        } catch (Exception e) {
+//            Log.i("CartManager Exception:", "error fetching favs");
+//        }
+//    }
 
     public void addToFavorites(DishItem item) {
         try {

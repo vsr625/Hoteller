@@ -26,7 +26,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         this.restItems = restItems;
     }
 
-    public void setData(List<Restaurant> list){
+    public void setData(List<Restaurant> list) {
         restItems = new ArrayList<>();
         restItems.addAll(list);
         notifyDataSetChanged();
