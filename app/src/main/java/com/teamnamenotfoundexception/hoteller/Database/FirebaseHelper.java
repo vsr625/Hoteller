@@ -66,8 +66,7 @@ public class FirebaseHelper {
 
     @SuppressLint("StaticFieldLeak")
     public ArrayList<Restaurant> fetchNearByRestaurants(double lat, double log) {
-        final ArrayList<Restaurant> res = new ArrayList<>();
-
+        ArrayList<Restaurant> res = new ArrayList<>();
         String response;
         JSONObject json = new JSONObject();
         try {
@@ -85,13 +84,12 @@ public class FirebaseHelper {
             JSONArray js = new JSONArray(response);
             for (int i = 0; i < js.length(); i++) {
                 JSONObject ob = js.getJSONObject(i);
-                Log.i("Debug", "doInBackground: " + ob.toString());
-                String id = String.valueOf(ob.get("id"));
-                String name = String.valueOf(ob.get("name"));
-                String area = String.valueOf(ob.get("area"));
+                String id = ob.getString("id");
+                String name = ob.getString("name");
+                String area = ob.getString("area");
                 String lLat = String.valueOf(ob.get("gps-lat"));
                 String lLong = String.valueOf(ob.get("gps-long"));
-                String mImagePath = String.valueOf(ob.get("rest-image"));
+                String mImagePath = ob.getString("rest-image");
                 res.add(new Restaurant(id, name, area, lLat, lLong, mImagePath));
             }
         } catch (JSONException e) {
@@ -108,6 +106,38 @@ public class FirebaseHelper {
 
     public ArrayList<DishItem> fetchItems(String restId) {
         ArrayList<DishItem> res = new ArrayList<>();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("rest-id", restId);
+            String request = json.toString();
+            HttpPost post = new HttpPost("https://us-central1-mad-project-cb7a6.cloudfunctions.net/getdetails");
+            StringEntity entity = new StringEntity(request);
+            post.setEntity(entity);
+            post.setHeader("Content-type", "application/json");
+            DefaultHttpClient client = new DefaultHttpClient();
+            BasicResponseHandler handler = new BasicResponseHandler();
+            String response = client.execute(post, handler);
+            String id = String.valueOf(new JSONObject(response).get("id"));
+            JSONArray items = new JSONObject(response).getJSONArray("items");
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject item = items.getJSONObject(i);
+                String name = item.getString("name");
+                int price = item.getInt("price");
+                String tags = item.getString("tags");
+                String desc = item.getString("desc");
+                String imgLink = item.getString("img-link");
+                String type = item.getString("type");
+                res.add(new DishItem(0, name, type, price, desc, imgLink, tags, id));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 
