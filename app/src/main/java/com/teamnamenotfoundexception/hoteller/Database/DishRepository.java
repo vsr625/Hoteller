@@ -14,6 +14,8 @@ public class DishRepository {
     private static DatabaseHelper mDatabaseHelper;
     private static FirebaseHelper mFirebaseHelper;
     private static ArrayList<DishItem> mDishItemsList = null;
+
+
     private static HashMap<String, ArrayList<DishItem>> mRestDishItem;
     private Context mAppContext;
     private SharedPreferences mSharedPref;
@@ -49,5 +51,9 @@ public class DishRepository {
 
     public ArrayList<DishItem> getDishItemsList() {
         return mDishItemsList;
+    }
+
+    public HashMap<String, ArrayList<DishItem>> getmRestDishItem() {
+        return mRestDishItem;
     }
 }

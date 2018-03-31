@@ -37,7 +37,7 @@ public class FavoriteActivity extends AppCompatActivity {
 
         // Get Favorite Items
         CartManager cartManager = CartManager.get(getApplicationContext());
-        ArrayList<DishItem> dishItems = cartManager.getFavItems();
+        ArrayList<DishItem> dishItems = cartManager.getAllFavItems();
 
         empty =  findViewById(R.id.fempty);
         nempty = findViewById(R.id.fnempty);

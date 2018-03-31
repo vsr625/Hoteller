@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -76,13 +75,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             holder.dishCount.setVisibility(View.GONE);
         }
 
-        boolean isFavorite = CartManager.get(context).getFavoriteIdList().contains(dishItem.getDishId());
-
-        if (isFavorite) {
-            dishItem.setDishFav(1);
-        } else {
-            dishItem.setDishFav(0);
-        }
+//        boolean isFavorite = CartManager.get(context).getFavoriteIdList().contains(dishItem.getDishId());
+//
+//        if (isFavorite) {
+//            dishItem.setDishFav(1);
+//        } else {
+//            dishItem.setDishFav(0);
+//        }
 
         if (dishItem.getIsFav() == 1) holder.heartBtn.setIconEnabled(true, false);
         if (dishItem.getIsCart() == 1) holder.cartBtn.setIconEnabled(true, false);
@@ -93,9 +92,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 CartManager cartManager = CartManager.get(context);
                 if (dishItem.isDishFav() == 0) {
                     dishItem.setDishFav(1);
-                    cartManager.addToFavorites(dishItem);
+                    //cartManager.addToFavorites(dishItem);
                     if (activity instanceof FavoriteActivity) {
-                        setData(cartManager.getFavItems());
+                        setData(cartManager.getAllFavItems());
                     }
                     holder.heartBtn.setIconEnabled(true, true);
                     final StyleableToast styleableToast = StyleableToast.makeText(context, dishItem.getDishName() + " is added to favourites!", R.style.love_rm);
@@ -109,9 +108,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                     }, 1000);
                 } else {
                     dishItem.setDishFav(0);
-                    cartManager.removeFromFavorites(dishItem);
+                    //cartManager.removeFromFavorites(dishItem);
                     if (activity instanceof FavoriteActivity) {
-                        setData(cartManager.getFavItems());
+                        setData(cartManager.getAllFavItems());
                     }
                     holder.heartBtn.setIconEnabled(false, true);
                     final StyleableToast styleableToast = StyleableToast.makeText(context, dishItem.getDishName() + " is removed from favorites!", R.style.love_rm);

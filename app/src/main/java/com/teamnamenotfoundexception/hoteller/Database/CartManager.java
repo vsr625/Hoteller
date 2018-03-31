@@ -10,6 +10,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.teamnamenotfoundexception.hoteller.Activities.MainActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class CartManager {
@@ -61,23 +63,23 @@ public class CartManager {
 //        }
 //    }
 
-    public void addToFavorites(DishItem item) {
-        try {
-            CartManager.get(mAppContext).getFavoriteIdList().add(item.getDishId());
-          //  mFirebaseHelper.updateFavoriteList(mFavoriteList, mUser);
-        } catch (Exception e) {
-            Log.i("CartManager Exception:", "cannot update favorite list");
-        }
-    }
-
-    public void removeFromFavorites(DishItem item) {
-        try {
-            CartManager.get(mAppContext).getFavoriteIdList().remove(Integer.valueOf(item.getDishId()));
-          //  mFirebaseHelper.updateFavoriteList(mFavoriteList, mUser);
-        } catch (Exception e) {
-            Log.i("CartManager Exception:", "cannto update after removing");
-        }
-    }
+//    public void addToFavorites(DishItem item) {
+//        try {
+//            CartManager.get(mAppContext).getFavoriteIdList().add(item.getDishId());
+//          //  mFirebaseHelper.updateFavoriteList(mFavoriteList, mUser);
+//        } catch (Exception e) {
+//            Log.i("CartManager Exception:", "cannot update favorite list");
+//        }
+//    }
+//
+//    public void removeFromFavorites(DishItem item) {
+//        try {
+//            CartManager.get(mAppContext).getFavoriteIdList().remove(Integer.valueOf(item.getDishId()));
+//          //  mFirebaseHelper.updateFavoriteList(mFavoriteList, mUser);
+//        } catch (Exception e) {
+//            Log.i("CartManager Exception:", "cannto update after removing");
+//        }
+//    }
 
     public void setListenerInterface(Activity activity) {
         if (activity != null) {
@@ -85,12 +87,16 @@ public class CartManager {
         }
     }
 
-    public ArrayList<DishItem> getFavItems() {
+    public ArrayList<DishItem> getAllFavItems() {
         ArrayList<DishItem> favoriteItems = new ArrayList<DishItem>();
-        ArrayList<DishItem> allDishList = DishRepository.get(mAppContext).getDishItemsList();
-        for (int i = 0; i < allDishList.size(); i++)
-            if (allDishList.get(i).isDishFav() == 1)
-                favoriteItems.add(allDishList.get(i));
+        HashMap<String, ArrayList<DishItem>> hashMap = DishRepository.get(mAppContext).getmRestDishItem();
+        for(ArrayList<DishItem> value : hashMap.values()) {
+            ArrayList<DishItem> allDishList = value;
+            for (int i = 0; i < allDishList.size(); i++)
+                if (allDishList.get(i).isDishFav() == 1) {
+                    favoriteItems.add(allDishList.get(i));
+                }
+        }
         return favoriteItems;
     }
 
