@@ -38,10 +38,11 @@ import com.teamnamenotfoundexception.hoteller.TutorialActivity;
 import com.teamnamenotfoundexception.hoteller.Adapters.CustomAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, UpdateNotificationCount {
-
+    private static HashMap<String, CustomAdapter> customAdapterHashMap;
     private static ArrayList<DishItem> dishItems;
     private static ArrayList<Restaurant> restItems;
     private static CartManager mCartManager;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity
             finish();
             return;
         }
-
+        customAdapterHashMap = new HashMap<>();
         // If logged in, initialize the Cart and Dish Repositories
         mCartManager = CartManager.get(getApplicationContext());
         mCartManager.setAuth(FirebaseAuth.getInstance());
@@ -92,7 +93,8 @@ public class MainActivity extends AppCompatActivity
 
         // Initialize Restaurant Repository with NearBy restaurants
         mRestRepository = RestaurantRepository.get(getApplicationContext());
-        mRestRepository.initializeNearByRestaurants();
+        if (mRestRepository.getmRestList().size() == 0)
+            mRestRepository.initializeNearByRestaurants();
         restItems = new ArrayList<>(mRestRepository.getmRestList());
 
         mDishRepository = DishRepository.get(getApplicationContext());
@@ -131,14 +133,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     // Display Items from a particular Restaurant
-    public static void displayItems(String RestId, Context context) {
+    public static void displayItems(String restId, Context context) {
         toolbar.setTitle("List of Items");
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        mDishRepository.initializeDishItemsList(RestId);
-        dishItems = mDishRepository.getDishItemsList();
-        mCustomAdapter = new CustomAdapter(context, dishItems);
-        recyclerView.setAdapter(mCustomAdapter);
+        mDishRepository.initializeDishItemsList(restId);
+        if(customAdapterHashMap.containsKey(restId)){
+            mCustomAdapter = customAdapterHashMap.get(restId);
+            recyclerView.setAdapter(customAdapterHashMap.get(restId));
+        }else{
+            dishItems = mDishRepository.getDishItemsList();
+            mCustomAdapter = new CustomAdapter(context, dishItems);
+            recyclerView.setAdapter(mCustomAdapter);
+            customAdapterHashMap.put(restId, mCustomAdapter);
+        }
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
@@ -147,7 +155,7 @@ public class MainActivity extends AppCompatActivity
     public static void notifyMe() {
         if (mCustomAdapter != null) {
             mCustomAdapter.notifyDataSetChanged();
-        }else{
+        } else {
             mRestAdapter.notifyDataSetChanged();
         }
     }
