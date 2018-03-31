@@ -2,41 +2,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     android:background="@color/colorPrimary"
+    android:padding="10dp"
     tools:context="com.teamnamenotfoundexception.hoteller.TutorialFragments.Tutorial3Fragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-
-        <ImageView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/touch_item"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+            android:layout_height="match_parent">
 
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:text="Tap on the Cart icon to add/remove an item to the Cart.
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/touch_item" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Tap on the Cart icon to add/remove an item to the Cart.
 You can also favorite/unfavorite the food item by tapping on the heart icon.\nThe Cart menu icon displays the number of items in cart."
-            android:textAlignment="center"/>
+                android:textAlignment="center"
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Let's go"
-           android:layout_marginTop="25dp"
-            android:layout_marginBottom="40dp"
-            android:id="@+id/bProceed"
-            style="@style/btnStyle"/>
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/bProceed"
+                style="@style/btnStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:layout_marginTop="25dp"
+                android:text="Let's go" />
+        </ScrollView>
+
     </LinearLayout>
 
 
