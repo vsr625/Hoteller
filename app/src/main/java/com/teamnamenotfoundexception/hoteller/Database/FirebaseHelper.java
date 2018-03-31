@@ -75,7 +75,6 @@ public class FirebaseHelper {
             json.put("gps-long", 11.22);
             json.put("curr-time", 1000);
             String request = json.toString();
-            Log.e("Debug", "fetchNearByRestaurants: " + request);
             HttpPost post = new HttpPost("https://us-central1-mad-project-cb7a6.cloudfunctions.net/getrest");
             StringEntity entity = new StringEntity(request);
             post.setEntity(entity);
@@ -83,18 +82,17 @@ public class FirebaseHelper {
             DefaultHttpClient client = new DefaultHttpClient();
             BasicResponseHandler handler = new BasicResponseHandler();
             response = client.execute(post, handler);
-            Log.e("Debug", "fetchNearByRestaurants: " + response);
             JSONArray js = new JSONArray(response);
             for (int i = 0; i < js.length(); i++) {
                 JSONObject ob = js.getJSONObject(i);
                 Log.i("Debug", "doInBackground: " + ob.toString());
                 String id = String.valueOf(ob.get("id"));
                 String name = String.valueOf(ob.get("name"));
-                String area = "My-area";
-                String llat = "11";
-                String llong = "12";
-                String mImagePath = "google.co.in";
-                res.add(new Restaurant(id, name, area, llat, llong, mImagePath));
+                String area = String.valueOf(ob.get("area"));
+                String lLat = String.valueOf(ob.get("gps-lat"));
+                String lLong = String.valueOf(ob.get("gps-long"));
+                String mImagePath = String.valueOf(ob.get("rest-image"));
+                res.add(new Restaurant(id, name, area, lLat, lLong, mImagePath));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -114,11 +112,11 @@ public class FirebaseHelper {
     }
 
 
-    public String getEmailStripped(String emailId) {
-        String emailIdSplit[] = emailId.split("@");
-        String _emailId = emailIdSplit[0];
-        return _emailId;
-    }
+//    public String getEmailStripped(String emailId) {
+//        String emailIdSplit[] = emailId.split("@");
+//        String _emailId = emailIdSplit[0];
+//        return _emailId;
+//    }
 
 //    public void fetchFavoriteList(FirebaseUser user) {
 //        String emailId = getEmailStripped(user.getEmail());
