@@ -70,8 +70,8 @@ public class FirebaseHelper {
         String response;
         JSONObject json = new JSONObject();
         try {
-            json.put("gps-lat", 11.11);
-            json.put("gps-long", 11.22);
+            json.put("gps-lat", lat);
+            json.put("gps-long", log);
             json.put("curr-time", 1000);
             String request = json.toString();
             HttpPost post = new HttpPost("https://us-central1-mad-project-cb7a6.cloudfunctions.net/getrest");
