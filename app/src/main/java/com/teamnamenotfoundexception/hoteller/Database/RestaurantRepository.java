@@ -51,8 +51,11 @@ public class RestaurantRepository {
         }
         if (locationManager != null) {
             Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            lat = l.getLatitude();
-            log = l.getLongitude();
+            if (l != null) {
+                lat = l.getLatitude();
+                log = l.getLongitude();
+            }
+            Toast.makeText(mContext, "Location Changed to " + lat + " " + log, Toast.LENGTH_SHORT).show();
             Log.i("Debug", "onLocationChanged: First " + lat + " -- " + log);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
         }
@@ -64,6 +67,7 @@ public class RestaurantRepository {
         public void onLocationChanged(Location loc) {
             lat = loc.getLatitude();
             log = loc.getLongitude();
+            Toast.makeText(mContext, "Location Changed to " + lat + " " + log, Toast.LENGTH_SHORT).show();
             Log.i("Debug", "onLocationChanged: " + lat + " -- " + log);
         }
 
