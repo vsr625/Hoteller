@@ -96,8 +96,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Invalid Credentials, try again",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Entered username and passwords are incorrect, please try again after checking",
+                                    Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.INVISIBLE);
                             signIn.setEnabled(true);
                             signUp.setEnabled(true);
@@ -115,7 +115,11 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isNetworkAvailableAndConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
-        return isNetworkAvailable && cm.getActiveNetworkInfo().isConnected();
+        if(isNetworkAvailable && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void onSignUpButtonClicked(View v) {
